@@ -1,0 +1,2 @@
+"0","sites_2 <- sites %>% "
+"0","  rename(loc = location)"

@@ -4,14 +4,117 @@ format: html
 editor: visual
 ---
 
+```{r}
+library(tidyverse)
+```
+
 ## Joins 
+
+```{r}
+animals <- tibble::tribble(
+  ~location,   ~species,  ~maturity,
+  "lagoon",   "bobcat",    "adult",
+   "bluff",   "coyote", "juvenile",
+   "creek",      "fox",    "adult",
+    "oaks", "squirrel", "juvenile",
+   "bluff",   "bobcat",    "adult"
+  )
+
+sites <- tibble::tribble(
+  ~location,      ~full_site_name, ~jurisdiction,
+    "beach",       "Goleta Beach",     "SB City",
+   "lagoon",        "UCSB Lagoon",        "UCSB",
+    "bluff",       "Ellwood Mesa",     "SB City",
+     "oaks", "Fremont Campground",        "USFS"
+  )
+
+```
 
 ### Full Join
 
+```{r}
+full_join_example <- full_join(animals, sites, 
+                               by = "location")
+```
+
 ### Left Join
+
+```{r}
+left_join_example <- left_join(animals, sites,
+                               by = "location")
+```
 
 ### Inner Join
 
+```{r}
+# Only joins what the data sets have in common
+inner_join_example <- inner_join(animals, sites,
+                                 by = "location")
+```
+
+```{r}
+sites_2 <- sites %>% 
+  rename(loc = location)
+```
+
+```{r}
+#Example of joining with non matching names
+
+nonmatching <- full_join(animals,
+                         sites_2,
+                         by = c("location" = "loc"))
+```
+
 ### Semi Join
 
+```{r}
+semi_join_example <- semi_join(animals, sites,
+                               by = "location")
+```
+
 ### Anti Join
+
+```{r}
+#Only retains rows if they don't have a match
+anti_join_example <- anti_join(animals, sites,
+                               by = "location")
+```
+
+## Wrangling Refresher
+
+```{r}
+library(palmerpenguins)
+```
+
+```{r}
+# Only include penguins at Biscoe and Dream islands
+penguins_wrangled <- penguins %>% 
+  filter(island %in% c("Biscoe",
+                       "Dream")) %>% 
+# Remove the year and sex variables
+ select(-year, -sex) %>% 
+# Add a new column called body_mass_kg, with penguin mass converted from grams to kilograms
+  mutate(body_mass_kg = body_mass_g / 1000) %>% 
+  # Rename the island variable to location
+  rename("location" = island)
+  
+```
+
+## Time
+```{r}
+#What is the ISO 8601 format for Feb 18 1996 at 8:34pm PST in SB
+#1996-02-18T20:34-07:00UTC
+
+#What is the ISO 8601 format for 12/5/2002 at 2:41am in SB
+#2002-12-05T02:41-07:00UTC
+```
+
+## Lubridate
+```{r}
+library(lubridate)
+```
+
+```{r}
+
+```
+

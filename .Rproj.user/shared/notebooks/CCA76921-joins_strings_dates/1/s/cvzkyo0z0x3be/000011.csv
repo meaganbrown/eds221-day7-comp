@@ -1,0 +1,2 @@
+"0","left_join_example <- left_join(animals, sites,"
+"0","                               by = ""location"")"

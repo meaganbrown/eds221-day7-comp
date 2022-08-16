@@ -1,0 +1,5 @@
+"0","#Example of joining with non matching names"
+"0",""
+"0","nonmatching <- full_join(animals,"
+"0","                         sites_2,"
+"0","                         by = c(""location"" = ""loc""))"
