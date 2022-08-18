@@ -8,7 +8,7 @@ editor: visual
 library(tidyverse)
 ```
 
-## Joins 
+## Joins
 
 ```{r}
 animals <- tibble::tribble(
@@ -101,6 +101,7 @@ penguins_wrangled <- penguins %>%
 ```
 
 ## Time
+
 ```{r}
 #What is the ISO 8601 format for Feb 18 1996 at 8:34pm PST in SB
 #1996-02-18T20:34-07:00UTC
@@ -109,12 +110,137 @@ penguins_wrangled <- penguins %>%
 #2002-12-05T02:41-07:00UTC
 ```
 
-## Lubridate
+## `Lubridate` (Dates + Times)
+
 ```{r}
 library(lubridate)
 ```
 
 ```{r}
+my_date <- "03-15-1998"
+# mdy, ymd, dmy
+class(my_date)
 
+my_date <- lubridate::mdy(my_date)
+
+my_date <- "11/7/2003"
+lubridate::dmy(my_date)
+
+my_date <- "08-Jun-1974"
+lubridate::dmy(my_date)
+
+my_date <- "19610518"
+lubridate::ymd(my_date)
+```
+
+```{r}
+lubridate::ymd("1942-08-30")
+
+lubridate::mdy("09/22/84")
+```
+
+```{r}
+library(lubridate)
+time <- "2020-08-12 11:18"
+time <- ymd_hm(time)
+```
+
+```{r}
+with_tz(time, "American/Los_Angeles")
+
+with_tz(time, "Europe/London")
+
+with_tz(time, "Asia/Jakarta")
+```
+
+```{r}
+my_time <- lubridate::ymd_hms(time)
+
+month(my_time)
+hour(my_time)
+minute(my_time)
+second(my_time)
+```
+
+```{r}
+teddy_bday <- lubridate::ymd("20170615")
+
+wday(teddy_bday, label = TRUE)
+
+meagan_bday <- lubridate::ymd("19990831")
+wday(meagan_bday, label = TRUE)
+```
+
+```{r}
+urchin_counts <- tribble(
+  ~date, ~species, ~size_mm,
+  "10/3/2020", "purple", 55,
+  "10/4/2020", "red", 48,
+  "11/17/2020", "red", 67)
+
+urchin_ymd <- urchin_counts %>% 
+  mutate(date = mdy(date)) %>% 
+  mutate(month = month(date),
+         day = day(date),
+         year = year(date))
+
+day_1 <- ymd("2020-01-06")
+day_2 <- ymd("2020-05-18")
+
+time_interval <- interval(day_1, day_2)
+
+time_length(time_interval, "year")
+```
+
+## `stringr`
+
+```{r}
+my_string <- "Teddy loves eating salmon and socks"
+
+my_string %>% 
+  str_detect("love")
+
+my_string %>% 
+  str_detect("pup")
+
+my_string <- c("burrito", 
+               "fish taco", 
+               "taco salad")
+my_string %>% 
+  str_detect(my_string)
+```
+
+```{r}
+skywalkers <- starwars %>% 
+  filter(str_detect(name, pattern = "Skywalker"))
+
+blue_eyes <- starwars %>% 
+  filter(str_detect(eye_color, pattern = "blue"))
+```
+
+```{r}
+firewalkers <- starwars %>% 
+  mutate(name_2 = str_replace(name, pattern = "Sky", replacement = "Fire"))
+```
+
+```{r}
+feedback <- c("  I  ate    some  nachos", "Wednesday morning    ")
+
+str_trim(feedback) #does not remove white space
+str_squish(feedback) #removes white space
+
+str_to_lower(feedback)
+str_to_upper(feedback)
+str_to_title(feedback)
+str_to_sentence(feedback)
+```
+
+```{r}
+sw_robot <- starwars %>% 
+  mutate(robot_status = case_when(
+    species == "Droid" ~ "A ROBOT!!!",
+    species == "Human" ~ "It's a human!",
+    TRUE ~ "This is something else."
+  ))
 ```
 
